@@ -39,3 +39,6 @@ Thumbs.db
 
 # Ruff
 .ruff_cache/
+
+# Log files from pycaret
+src/modelling/logs.log

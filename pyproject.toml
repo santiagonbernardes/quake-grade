@@ -6,11 +6,24 @@ readme = "README.md"
 authors = [
     { name = "Santiago Bernardes", email = "santiagobernardes@gmail.com" }
 ]
-requires-python = ">=3.13.3"
-dependencies = []
+requires-python = ">=3.11"
+dependencies = [
+    "pycaret==3.3.2", # has pandas, scikit-learn, matplotlib, jupyter
+    "seaborn>=0.13.2",
+    "streamlit>=1.45.1",
+]
+
+[dependency-groups]
+dev = [
+    "notebook>=7.4.3",
+]
+
+override-dependencies = [
+    "kaleido==0.2.1" # OS incompatibility with v0.2.1.post1
+]
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = [
@@ -22,10 +35,15 @@ select = [
     "C4", # flake8-comprehensions
     "UP", # pyupgrade
 ]
-ignore = []
+ignore = ["UP007"]  # Ignore union syntax upgrade - causes runtime errors with Streamlit module imports
+
+[tool.ruff.lint.per-file-ignores]
+"**/train.*" = ["E501"]  # ignore line length for train files
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
+
+
