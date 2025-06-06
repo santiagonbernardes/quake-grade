@@ -1,8 +1,8 @@
-import streamlit as st
-import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import seaborn as sns
+import streamlit as st
 from pycaret.classification import load_model, predict_model
 
 # Estilo dos gráficos
