@@ -10,6 +10,7 @@ requires-python = ">=3.11.13"
 dependencies = [
     "pycaret==3.3.2", # has pandas, scikit-learn, matplotlib, jupyter
     "seaborn>=0.13.2",
+    "streamlit>=1.45.1",
 ]
 
 [dependency-groups]
