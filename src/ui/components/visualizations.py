@@ -12,6 +12,8 @@ from ..utils.constants import (
     HEADER_BOXPLOTS,
     HEADER_HISTOGRAMS,
     HEADER_STATISTICS,
+    HEADER_MAP,
+    HEADER_CORRELATION,
     MAP_STYLE,
     MAP_ZOOM_LEVEL,
     SELECT_NUMERIC_COLUMN,
@@ -23,6 +25,7 @@ from ..utils.constants import (
     INFO_CORRELATION_REQUIREMENT,
     MAP_TITLE,
     CORRELATION_MATRIX_TITLE,
+    ERROR_MAP_CREATION,
 )
 
 # Set the default style for matplotlib plots
@@ -210,6 +213,8 @@ def display_correlation_heatmap(df: pd.DataFrame):
         st.info(INFO_CORRELATION_REQUIREMENT)
         return
 
+    st.subheader(HEADER_CORRELATION)
+
     # Calculate correlation matrix
     corr_matrix = numeric_df.corr()
 
@@ -230,3 +235,19 @@ def display_correlation_heatmap(df: pd.DataFrame):
     plt.tight_layout()
 
     st.pyplot(fig)
+
+
+def display_severity_map(predictions: pd.DataFrame):
+    """
+    Display an interactive map showing earthquake severity predictions.
+    
+    Args:
+        predictions: DataFrame with predictions including location and severity data
+    """
+    st.subheader(HEADER_MAP)
+    
+    map_fig = create_severity_map(predictions)
+    if map_fig:
+        st.plotly_chart(map_fig, use_container_width=True)
+    else:
+        st.warning(ERROR_MAP_CREATION)

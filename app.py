@@ -17,20 +17,16 @@ from src.ui.components.predictions import (
     run_prediction_pipeline,
 )
 from src.ui.components.visualizations import (
-    create_severity_map,
     display_correlation_heatmap,
     display_distribution_analysis,
+    display_severity_map,
     display_statistics,
 )
 from src.ui.utils.constants import (
     BUTTON_RANDOM_DATASET,
     ERROR_MODEL_LOAD,
-    HEADER_MAP,
     HEADER_PREVIEW,
-    HEADER_CORRELATION,
-    HEADER_SEVERITY_DISTRIBUTION,
     HEADER_CSV_FORMAT,
-    ERROR_MAP_CREATION,
     INFO_UPLOAD_FILE,
     SUCCESS_RANDOM_DATASET,
     TAB_DESCRIPTIVE,
@@ -52,7 +48,7 @@ def main():
     display_header()
 
     # Data source selection
-    col1, col2 = st.columns([1, 3])
+    col1, col2 = st.columns([1, 3], vertical_alignment="center")
 
     with col1:
         if st.button(BUTTON_RANDOM_DATASET, use_container_width=True):
@@ -97,7 +93,6 @@ def main():
             st.divider()
 
             # Correlation analysis
-            st.subheader(HEADER_CORRELATION)
             display_correlation_heatmap(df)
 
         # Predictive Analysis Tab
@@ -112,18 +107,12 @@ def main():
                 st.divider()
 
                 # Severity distribution
-                st.subheader(HEADER_SEVERITY_DISTRIBUTION)
                 display_severity_distribution(predictions)
 
                 st.divider()
 
                 # Map visualization
-                st.subheader(HEADER_MAP)
-                map_fig = create_severity_map(predictions)
-                if map_fig:
-                    st.plotly_chart(map_fig, use_container_width=True)
-                else:
-                    st.warning(ERROR_MAP_CREATION)
+                display_severity_map(predictions)
 
             elif error:
                 st.error(ERROR_MODEL_LOAD.format(error))

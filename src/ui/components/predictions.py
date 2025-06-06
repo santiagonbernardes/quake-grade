@@ -24,7 +24,7 @@ from ..utils.constants import (
     HELP_HIGH_SEVERITY,
     HELP_VERY_HIGH_SEVERITY,
     LOADING_MODEL,
-    LOADING_PREDICTIONS,
+    LOADING_PREDICTIONS, HEADER_SEVERITY_DISTRIBUTION,
 )
 
 
@@ -174,6 +174,7 @@ def display_severity_distribution(predictions: pd.DataFrame):
     Args:
         predictions: DataFrame with predictions
     """
+    st.subheader(HEADER_SEVERITY_DISTRIBUTION)
     severity_counts = predictions["Gravedad"].value_counts()
 
     # Create a bar chart using Streamlit native chart
