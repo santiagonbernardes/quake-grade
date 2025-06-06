@@ -82,7 +82,9 @@ DOWNLOAD_FILENAME = "predicoes_terremotos.csv"
 
 # Warning and info messages
 WARNING_NO_NUMERIC_COLUMNS = "Nenhuma coluna numérica encontrada no dataset."
-INFO_CORRELATION_REQUIREMENT = "Necessário pelo menos 2 colunas numéricas para análise de correlação."
+INFO_CORRELATION_REQUIREMENT = (
+    "Necessário pelo menos 2 colunas numéricas para análise de correlação."
+)
 
 # Chart titles
 MAP_TITLE = "Distribuição Geográfica dos Terremotos"
@@ -100,14 +102,14 @@ SEVERITY_LEVELS = {
     "Baja": "Baixa",
     "Media": "Média",
     "Alta": "Alta",
-    "Muy Alta": "Muito Alta"
+    "Muy Alta": "Muito Alta",
 }
 
 SEVERITY_COLORS = {
-    "Baja": "#2c7fb8",      # Blue (cold)
-    "Media": "#41b6c4",     # Light blue/turquoise
-    "Alta": "#fdae61",      # Warm orange
-    "Muy Alta": "#d7191c"   # Intense red (hot)
+    "Baja": "#2c7fb8",  # Blue (cold)
+    "Media": "#41b6c4",  # Light blue/turquoise
+    "Alta": "#fdae61",  # Warm orange
+    "Muy Alta": "#d7191c",  # Intense red (hot)
 }
 
 # File paths
@@ -125,7 +127,7 @@ MAP_STYLE = "carto-positron"
 MENU_ABOUT = """
 # Quake-Grade 🌍
 
-Sistema inteligente de classificação de severidade sísmica que combina análise 
+Sistema inteligente de classificação de severidade sísmica que combina análise
 de dados e Machine Learning para prever níveis de impacto de terremotos.
 
 Desenvolvido para o programa Global Solutions da FIAP.

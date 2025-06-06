@@ -1,6 +1,5 @@
 """Data validation utilities for the Quake-Grade application."""
 
-
 import pandas as pd
 
 from ..utils.constants import EXPECTED_COLUMNS
@@ -9,10 +8,10 @@ from ..utils.constants import EXPECTED_COLUMNS
 def validate_columns(df: pd.DataFrame) -> tuple[bool, list[str]]:
     """
     Validate if the DataFrame contains all expected columns.
-    
+
     Args:
         df: DataFrame to validate
-        
+
     Returns:
         Tuple of (is_valid, missing_columns)
     """
@@ -24,10 +23,10 @@ def validate_columns(df: pd.DataFrame) -> tuple[bool, list[str]]:
 def validate_data_ranges(df: pd.DataFrame) -> tuple[bool, list[str]]:
     """
     Validate if data values are within expected ranges.
-    
+
     Args:
         df: DataFrame to validate
-        
+
     Returns:
         Tuple of (is_valid, error_messages)
     """
@@ -60,10 +59,10 @@ def validate_data_ranges(df: pd.DataFrame) -> tuple[bool, list[str]]:
 def validate_data_types(df: pd.DataFrame) -> tuple[bool, list[str]]:
     """
     Validate if columns have correct data types.
-    
+
     Args:
         df: DataFrame to validate
-        
+
     Returns:
         Tuple of (is_valid, error_messages)
     """
@@ -81,10 +80,10 @@ def validate_data_types(df: pd.DataFrame) -> tuple[bool, list[str]]:
 def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean the dataset by removing unnecessary columns.
-    
+
     Args:
         df: DataFrame to clean
-        
+
     Returns:
         Cleaned DataFrame
     """
@@ -98,11 +97,11 @@ def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:
 def validate_file_size(file_size: int, max_size_mb: int = 100) -> tuple[bool, str]:
     """
     Validate uploaded file size.
-    
+
     Args:
         file_size: Size of file in bytes
         max_size_mb: Maximum allowed size in MB
-        
+
     Returns:
         Tuple of (is_valid, error_message)
     """

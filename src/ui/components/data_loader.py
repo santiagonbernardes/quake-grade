@@ -1,21 +1,19 @@
 """Data loading and handling components for the Quake-Grade application."""
 
-
 import numpy as np
 import pandas as pd
 import streamlit as st
-from typing import Optional
 
 from ..utils.constants import (
-    BASE_DATASET_PATH, 
-    CACHE_TTL_DATA, 
-    UPLOAD_LABEL,
-    ERROR_MISSING_COLUMNS,
-    SUCCESS_FILE_LOADED,
+    BASE_DATASET_PATH,
+    CACHE_TTL_DATA,
     ERROR_FILE_LOAD,
-    METRIC_TOTAL_RECORDS,
+    ERROR_MISSING_COLUMNS,
+    METRIC_MEMORY_USAGE,
     METRIC_TOTAL_COLUMNS,
-    METRIC_MEMORY_USAGE
+    METRIC_TOTAL_RECORDS,
+    SUCCESS_FILE_LOADED,
+    UPLOAD_LABEL,
 )
 from ..utils.validators import (
     clean_dataset,
@@ -29,7 +27,7 @@ from ..utils.validators import (
 def load_base_dataset() -> pd.DataFrame:
     """
     Load and cache the base dataset.
-    
+
     Returns:
         Base DataFrame for the application
     """
@@ -38,14 +36,16 @@ def load_base_dataset() -> pd.DataFrame:
     return df
 
 
-def generate_random_dataset(base_df: pd.DataFrame, n_samples: Optional[int] = None) -> pd.DataFrame:
+def generate_random_dataset(
+    base_df: pd.DataFrame, n_samples: int | None = None
+) -> pd.DataFrame:
     """
     Generate a random dataset based on the statistical properties of the base dataset.
-    
+
     Args:
         base_df: Base DataFrame to use for statistical properties
         n_samples: Number of samples to generate (default: same as base)
-        
+
     Returns:
         Generated DataFrame with random data
     """
@@ -81,10 +81,10 @@ def generate_random_dataset(base_df: pd.DataFrame, n_samples: Optional[int] = No
     return random_df
 
 
-def handle_file_upload() -> Optional[pd.DataFrame]:
+def handle_file_upload() -> pd.DataFrame | None:
     """
     Handle file upload with validation.
-    
+
     Returns:
         Validated DataFrame or None if no valid file uploaded
     """
@@ -101,7 +101,7 @@ def handle_file_upload() -> Optional[pd.DataFrame]:
             # Validate columns
             columns_valid, missing_columns = validate_columns(df)
             if not columns_valid:
-                st.error(ERROR_MISSING_COLUMNS.format(', '.join(missing_columns)))
+                st.error(ERROR_MISSING_COLUMNS.format(", ".join(missing_columns)))
                 return None
 
             # Validate data types
@@ -130,7 +130,7 @@ def handle_file_upload() -> Optional[pd.DataFrame]:
 def display_data_info(df: pd.DataFrame):
     """
     Display basic information about the loaded dataset.
-    
+
     Args:
         df: DataFrame to display info for
     """

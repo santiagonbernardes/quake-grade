@@ -25,8 +25,8 @@ from src.ui.components.visualizations import (
 from src.ui.utils.constants import (
     BUTTON_RANDOM_DATASET,
     ERROR_MODEL_LOAD,
-    HEADER_PREVIEW,
     HEADER_CSV_FORMAT,
+    HEADER_PREVIEW,
     INFO_UPLOAD_FILE,
     SUCCESS_RANDOM_DATASET,
     TAB_DESCRIPTIVE,
@@ -54,7 +54,7 @@ def main():
         if st.button(BUTTON_RANDOM_DATASET, use_container_width=True):
             base_df = load_base_dataset()
             st.session_state.df = generate_random_dataset(base_df)
-            st.session_state.data_source = 'random'
+            st.session_state.data_source = "random"
             st.success(SUCCESS_RANDOM_DATASET)
             st.rerun()
 
@@ -62,7 +62,7 @@ def main():
         uploaded_df = handle_file_upload()
         if uploaded_df is not None:
             st.session_state.df = uploaded_df
-            st.session_state.data_source = 'upload'
+            st.session_state.data_source = "upload"
             st.rerun()
 
     # Display data source info

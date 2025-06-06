@@ -1,30 +1,29 @@
 """Machine learning prediction components for the Quake-Grade application."""
 
-
 import pandas as pd
 import streamlit as st
 from pycaret.classification import load_model, predict_model
-from typing import Optional
 
 from ..utils.constants import (
-    DOWNLOAD_LABEL,
     DOWNLOAD_FILENAME,
-    HEADER_PREDICTIONS,
+    DOWNLOAD_LABEL,
     HEADER_PREDICTION_DETAILS,
+    HEADER_PREDICTIONS,
+    HEADER_SEVERITY_DISTRIBUTION,
+    HELP_HIGH_SEVERITY,
+    HELP_LOW_SEVERITY,
+    HELP_MEDIUM_SEVERITY,
+    HELP_VERY_HIGH_SEVERITY,
+    LOADING_MODEL,
+    LOADING_PREDICTIONS,
+    METRIC_HIGH_SEVERITY,
+    METRIC_LOW_SEVERITY,
+    METRIC_MEDIUM_SEVERITY,
+    METRIC_VERY_HIGH_SEVERITY,
     MODEL_PATH,
     SEVERITY_COLORS,
     SEVERITY_LEVELS,
     SUCCESS_MODEL_LOADED,
-    METRIC_LOW_SEVERITY,
-    METRIC_MEDIUM_SEVERITY,
-    METRIC_HIGH_SEVERITY,
-    METRIC_VERY_HIGH_SEVERITY,
-    HELP_LOW_SEVERITY,
-    HELP_MEDIUM_SEVERITY,
-    HELP_HIGH_SEVERITY,
-    HELP_VERY_HIGH_SEVERITY,
-    LOADING_MODEL,
-    LOADING_PREDICTIONS, HEADER_SEVERITY_DISTRIBUTION,
 )
 
 
@@ -33,7 +32,7 @@ def load_ml_model():
     """
     Load and cache the machine learning model.
     Using cache_resource as recommended for ML models in Streamlit docs.
-    
+
     Returns:
         Loaded PyCaret model
     """
@@ -47,11 +46,11 @@ def load_ml_model():
 def run_predictions(model, df: pd.DataFrame) -> pd.DataFrame:
     """
     Run predictions on the input DataFrame.
-    
+
     Args:
         model: Loaded ML model
         df: Input DataFrame
-        
+
     Returns:
         DataFrame with predictions
     """
@@ -64,13 +63,14 @@ def run_predictions(model, df: pd.DataFrame) -> pd.DataFrame:
 def style_predictions_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
     Apply color styling to predictions based on severity.
-    
+
     Args:
         df: DataFrame with predictions
-        
+
     Returns:
         Styled DataFrame
     """
+
     def apply_row_color(row):
         """Apply background color based on severity level."""
         severity = row.get("Gravedad", "")
@@ -85,7 +85,7 @@ def style_predictions_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 def display_prediction_results(predictions: pd.DataFrame):
     """
     Display prediction results with proper formatting.
-    
+
     Args:
         predictions: DataFrame with predictions
     """
@@ -98,30 +98,28 @@ def display_prediction_results(predictions: pd.DataFrame):
 
     with col1:
         st.metric(
-            METRIC_LOW_SEVERITY,
-            severity_counts.get("Baja", 0),
-            help=HELP_LOW_SEVERITY
+            METRIC_LOW_SEVERITY, severity_counts.get("Baja", 0), help=HELP_LOW_SEVERITY
         )
 
     with col2:
         st.metric(
             METRIC_MEDIUM_SEVERITY,
             severity_counts.get("Media", 0),
-            help=HELP_MEDIUM_SEVERITY
+            help=HELP_MEDIUM_SEVERITY,
         )
 
     with col3:
         st.metric(
             METRIC_HIGH_SEVERITY,
             severity_counts.get("Alta", 0),
-            help=HELP_HIGH_SEVERITY
+            help=HELP_HIGH_SEVERITY,
         )
 
     with col4:
         st.metric(
             METRIC_VERY_HIGH_SEVERITY,
             severity_counts.get("Muy Alta", 0),
-            help=HELP_VERY_HIGH_SEVERITY
+            help=HELP_VERY_HIGH_SEVERITY,
         )
 
     # Display styled dataframe
@@ -130,22 +128,24 @@ def display_prediction_results(predictions: pd.DataFrame):
     st.dataframe(styled_df, use_container_width=True)
 
     # Download button
-    csv_data = predictions.to_csv(index=False).encode('utf-8')
+    csv_data = predictions.to_csv(index=False).encode("utf-8")
     st.download_button(
         label=DOWNLOAD_LABEL,
         data=csv_data,
         file_name=DOWNLOAD_FILENAME,
-        mime="text/csv"
+        mime="text/csv",
     )
 
 
-def run_prediction_pipeline(df: pd.DataFrame) -> tuple[bool, Optional[pd.DataFrame], Optional[str]]:
+def run_prediction_pipeline(
+    df: pd.DataFrame,
+) -> tuple[bool, pd.DataFrame | None, str | None]:
     """
     Run the complete prediction pipeline.
-    
+
     Args:
         df: Input DataFrame
-        
+
     Returns:
         Tuple of (success, predictions_df, error_message)
     """
@@ -170,7 +170,7 @@ def run_prediction_pipeline(df: pd.DataFrame) -> tuple[bool, Optional[pd.DataFra
 def display_severity_distribution(predictions: pd.DataFrame):
     """
     Display distribution of predicted severities.
-    
+
     Args:
         predictions: DataFrame with predictions
     """
@@ -178,9 +178,11 @@ def display_severity_distribution(predictions: pd.DataFrame):
     severity_counts = predictions["Gravedad"].value_counts()
 
     # Create a bar chart using Streamlit native chart
-    chart_data = pd.DataFrame({
-        'Gravidade': [SEVERITY_LEVELS.get(k, k) for k in severity_counts.index],
-        'Quantidade': severity_counts.values
-    })
+    chart_data = pd.DataFrame(
+        {
+            "Gravidade": [SEVERITY_LEVELS.get(k, k) for k in severity_counts.index],
+            "Quantidade": severity_counts.values,
+        }
+    )
 
-    st.bar_chart(chart_data.set_index('Gravidade'))
+    st.bar_chart(chart_data.set_index("Gravidade"))
