@@ -35,7 +35,7 @@ select = [
     "C4", # flake8-comprehensions
     "UP", # pyupgrade
 ]
-ignore = []
+ignore = ["UP007"]  # Ignore union syntax upgrade - causes runtime errors with Streamlit module imports
 
 [tool.ruff.lint.per-file-ignores]
 "**/train.*" = ["E501"]  # ignore line length for train files

@@ -1,5 +1,7 @@
 """Machine learning prediction components for the Quake-Grade application."""
 
+from typing import Optional
+
 import pandas as pd
 import streamlit as st
 from pycaret.classification import load_model, predict_model
@@ -139,7 +141,7 @@ def display_prediction_results(predictions: pd.DataFrame):
 
 def run_prediction_pipeline(
     df: pd.DataFrame,
-) -> tuple[bool, pd.DataFrame | None, str | None]:
+) -> tuple[bool, Optional[pd.DataFrame], Optional[str]]:
     """
     Run the complete prediction pipeline.
 

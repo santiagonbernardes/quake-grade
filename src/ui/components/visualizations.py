@@ -1,5 +1,7 @@
 """Visualization components for the Quake-Grade application."""
 
+from typing import Optional
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import plotly.express as px
@@ -144,7 +146,7 @@ def create_severity_map(
     lat_col: str = "Latitud",
     lon_col: str = "Longitud",
     severity_col: str = "Gravedad",
-) -> px.scatter_mapbox | None:
+) -> Optional[px.scatter_mapbox]:
     """
     Create an interactive map showing earthquake severity.
 

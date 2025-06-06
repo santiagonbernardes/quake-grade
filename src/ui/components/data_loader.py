@@ -1,5 +1,7 @@
 """Data loading and handling components for the Quake-Grade application."""
 
+from typing import Optional
+
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -37,7 +39,7 @@ def load_base_dataset() -> pd.DataFrame:
 
 
 def generate_random_dataset(
-    base_df: pd.DataFrame, n_samples: int | None = None
+    base_df: pd.DataFrame, n_samples: Optional[int] = None
 ) -> pd.DataFrame:
     """
     Generate a random dataset based on the statistical properties of the base dataset.
@@ -81,7 +83,7 @@ def generate_random_dataset(
     return random_df
 
 
-def handle_file_upload() -> pd.DataFrame | None:
+def handle_file_upload() -> Optional[pd.DataFrame]:
     """
     Handle file upload with validation.
 
