@@ -32,26 +32,21 @@ def validate_data_ranges(df: pd.DataFrame) -> tuple[bool, list[str]]:
     """
     errors = []
 
-    # Magnitude validation (0-10 Richter scale)
-    if "Magnitud" in df.columns:
-        if df["Magnitud"].min() < 0 or df["Magnitud"].max() > 10:
-            errors.append("Magnitude deve estar entre 0 e 10")
+    # Define valid ranges for columns
+    column_ranges = {
+        "Magnitud": (0, 10),  # Magnitude validation (0-10 Richter scale)
+        "Latitud": (-90, 90),  # Latitude validation (-90 to 90)
+        "Longitud": (-180, 180),  # Longitude validation (-180 to 180)
+        "Profundidad": (0, None),  # Depth validation (non-negative)
+    }
 
-    # Latitude validation (-90 to 90)
-    if "Latitud" in df.columns:
-        if df["Latitud"].min() < -90 or df["Latitud"].max() > 90:
-            errors.append("Latitude deve estar entre -90 e 90")
-
-    # Longitude validation (-180 to 180)
-    if "Longitud" in df.columns:
-        if df["Longitud"].min() < -180 or df["Longitud"].max() > 180:
-            errors.append("Longitude deve estar entre -180 e 180")
-
-    # Depth validation (non-negative)
-    if "Profundidad" in df.columns:
-        if df["Profundidad"].min() < 0:
-            errors.append("Profundidade não pode ser negativa")
-
+    # Validate each column based on its range
+    for column, (min_val, max_val) in column_ranges.items():
+        if column in df.columns:
+            if min_val is not None and df[column].min() < min_val:
+                errors.append(f"{column} deve ser maior ou igual a {min_val}")
+            if max_val is not None and df[column].max() > max_val:
+                errors.append(f"{column} deve ser menor ou igual a {max_val}")
     is_valid = len(errors) == 0
     return is_valid, errors
 
