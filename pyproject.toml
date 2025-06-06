@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Santiago Bernardes", email = "santiagobernardes@gmail.com" }
 ]
-requires-python = ">=3.11.13"
+requires-python = ">=3.11"
 dependencies = [
     "pycaret==3.3.2", # has pandas, scikit-learn, matplotlib, jupyter
     "seaborn>=0.13.2",

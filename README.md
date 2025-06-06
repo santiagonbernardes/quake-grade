@@ -4,7 +4,7 @@ Sistema inteligente de classificação de severidade sísmica que combina análi
 
 ## Dependências
 
-O projeto usa **Python 3.11.13** e separa as dependências em dois ambientes:
+O projeto usa **Python 3.11+** e separa as dependências em dois ambientes:
 
 ### Dependências de Produção
 - `streamlit` - Framework web (inclui pandas & numpy)
