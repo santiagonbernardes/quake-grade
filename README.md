@@ -9,13 +9,16 @@ O projeto usa **Python 3.11.13** e separa as dependências em dois ambientes:
 ### Dependências de Produção
 - `streamlit` - Framework web (inclui pandas & numpy)
 - `pycaret` - Automação de workflow de ML
-- `matplotlib` - Plotagem básica  
+  - O `pycaret` vem com várias dependências utilizadas no projeto, como:
+    - `scikit-learn` - Biblioteca de aprendizado de máquina
+    - `jupyter` - Notebooks interativos
+    - `matplotlib` - Visualização de dados
+    - `pandas` - Manipulação de dados
 - `seaborn` - Visualização estatística
 - `plotly` - Mapas interativos
 
-### Dependências de Desenvolvimento  
-- `jupyter` - Ambiente de notebook para treino de modelos
-- `scikit-learn` - Métricas e avaliação de ML
+### Dependências de Desenvolvimento
+- `notebook` - Extensão para notebooks no jupyter
 
 ## Configuração
 
@@ -35,5 +38,5 @@ uv sync --no-dev
 uv run python app.py
 
 # Iniciar Jupyter para desenvolvimento de modelos
-uv run jupyter lab
+uv run jupyter notebook
 ```
