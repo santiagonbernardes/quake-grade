@@ -6,8 +6,14 @@ readme = "README.md"
 authors = [
     { name = "Santiago Bernardes", email = "santiagobernardes@gmail.com" }
 ]
-requires-python = ">=3.13.3"
-dependencies = []
+requires-python = ">=3.11.13"
+dependencies = [
+    "matplotlib>=3.10.3",
+    "plotly>=6.1.2",
+    "pycaret>=2.2.2",
+    "seaborn>=0.13.2",
+    "streamlit>=1.45.1",
+]
 
 [tool.ruff]
 target-version = "py313"
@@ -33,4 +39,5 @@ line-ending = "auto"
 [dependency-groups]
 dev = [
     "jupyter>=1.1.1",
+    "scikit-learn>=1.7.0",
 ]
