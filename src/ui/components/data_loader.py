@@ -6,7 +6,17 @@ import pandas as pd
 import streamlit as st
 from typing import Optional
 
-from ..utils.constants import BASE_DATASET_PATH, CACHE_TTL_DATA
+from ..utils.constants import (
+    BASE_DATASET_PATH, 
+    CACHE_TTL_DATA, 
+    UPLOAD_LABEL,
+    ERROR_MISSING_COLUMNS,
+    SUCCESS_FILE_LOADED,
+    ERROR_FILE_LOAD,
+    METRIC_TOTAL_RECORDS,
+    METRIC_TOTAL_COLUMNS,
+    METRIC_MEMORY_USAGE
+)
 from ..utils.validators import (
     clean_dataset,
     validate_columns,
@@ -78,7 +88,7 @@ def handle_file_upload() -> Optional[pd.DataFrame]:
     Returns:
         Validated DataFrame or None if no valid file uploaded
     """
-    uploaded_file = st.file_uploader("📂 Envie seu arquivo CSV", type=["csv"])
+    uploaded_file = st.file_uploader(UPLOAD_LABEL, type=["csv"])
 
     if uploaded_file is not None:
         try:
@@ -91,10 +101,7 @@ def handle_file_upload() -> Optional[pd.DataFrame]:
             # Validate columns
             columns_valid, missing_columns = validate_columns(df)
             if not columns_valid:
-                st.error(
-                    f"O dataset enviado não possui as seguintes colunas obrigatórias: "
-                    f"{', '.join(missing_columns)}. Por favor, envie um arquivo no formato correto."
-                )
+                st.error(ERROR_MISSING_COLUMNS.format(', '.join(missing_columns)))
                 return None
 
             # Validate data types
@@ -110,11 +117,11 @@ def handle_file_upload() -> Optional[pd.DataFrame]:
                 for error in range_errors:
                     st.warning(error)
 
-            st.success("Arquivo carregado com sucesso!")
+            st.success(SUCCESS_FILE_LOADED)
             return df
 
         except Exception as e:
-            st.error(f"Erro ao carregar arquivo: {e}")
+            st.error(ERROR_FILE_LOAD.format(e))
             return None
 
     return None
@@ -130,10 +137,10 @@ def display_data_info(df: pd.DataFrame):
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Total de Registros", f"{len(df):,}")
+        st.metric(METRIC_TOTAL_RECORDS, f"{len(df):,}")
 
     with col2:
-        st.metric("Total de Colunas", len(df.columns))
+        st.metric(METRIC_TOTAL_COLUMNS, len(df.columns))
 
     with col3:
-        st.metric("Memória Utilizada", f"{df.memory_usage().sum() / 1024:.1f} KB")
+        st.metric(METRIC_MEMORY_USAGE, f"{df.memory_usage().sum() / 1024:.1f} KB")

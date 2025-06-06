@@ -16,6 +16,13 @@ from ..utils.constants import (
     MAP_ZOOM_LEVEL,
     SELECT_NUMERIC_COLUMN,
     SEVERITY_COLORS,
+    TAB_SUMMARY,
+    TAB_DETAILED,
+    HELP_STATISTICS,
+    WARNING_NO_NUMERIC_COLUMNS,
+    INFO_CORRELATION_REQUIREMENT,
+    MAP_TITLE,
+    CORRELATION_MATRIX_TITLE,
 )
 
 # Set the default style for matplotlib plots
@@ -32,7 +39,7 @@ def display_statistics(df: pd.DataFrame):
     st.subheader(HEADER_STATISTICS)
 
     # Use tabs for better organization
-    tab1, tab2 = st.tabs(["📊 Resumo", "📈 Detalhado"])
+    tab1, tab2 = st.tabs([TAB_SUMMARY, TAB_DETAILED])
 
     with tab1:
         # Display key metrics using st.metric
@@ -46,7 +53,7 @@ def display_statistics(df: pd.DataFrame):
                         label=col,
                         value=f"{df[col].mean():.2f}",
                         delta=f"σ = {df[col].std():.2f}",
-                        help="Média ± Desvio Padrão"
+                        help=HELP_STATISTICS
                     )
 
     with tab2:
@@ -108,7 +115,7 @@ def display_distribution_analysis(df: pd.DataFrame):
     numeric_columns = df.select_dtypes(include='number').columns.tolist()
 
     if not numeric_columns:
-        st.warning("Nenhuma coluna numérica encontrada no dataset.")
+        st.warning(WARNING_NO_NUMERIC_COLUMNS)
         return
 
     col1, col2 = st.columns(2)
@@ -179,7 +186,7 @@ def create_severity_map(
         zoom=MAP_ZOOM_LEVEL,
         mapbox_style=MAP_STYLE,
         hover_data=hover_data,
-        title="Distribuição Geográfica dos Terremotos"
+        title=MAP_TITLE
     )
 
     fig.update_layout(
@@ -200,7 +207,7 @@ def display_correlation_heatmap(df: pd.DataFrame):
     numeric_df = df.select_dtypes(include='number')
 
     if numeric_df.shape[1] < 2:
-        st.info("Necessário pelo menos 2 colunas numéricas para análise de correlação.")
+        st.info(INFO_CORRELATION_REQUIREMENT)
         return
 
     # Calculate correlation matrix
@@ -219,7 +226,7 @@ def display_correlation_heatmap(df: pd.DataFrame):
         cbar_kws={"label": "Correlação"},
         ax=ax
     )
-    ax.set_title("Matriz de Correlação")
+    ax.set_title(CORRELATION_MATRIX_TITLE)
     plt.tight_layout()
 
     st.pyplot(fig)

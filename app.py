@@ -27,6 +27,10 @@ from src.ui.utils.constants import (
     ERROR_MODEL_LOAD,
     HEADER_MAP,
     HEADER_PREVIEW,
+    HEADER_CORRELATION,
+    HEADER_SEVERITY_DISTRIBUTION,
+    HEADER_CSV_FORMAT,
+    ERROR_MAP_CREATION,
     INFO_UPLOAD_FILE,
     SUCCESS_RANDOM_DATASET,
     TAB_DESCRIPTIVE,
@@ -93,7 +97,7 @@ def main():
             st.divider()
 
             # Correlation analysis
-            st.subheader("📊 Análise de Correlação")
+            st.subheader(HEADER_CORRELATION)
             display_correlation_heatmap(df)
 
         # Predictive Analysis Tab
@@ -108,7 +112,7 @@ def main():
                 st.divider()
 
                 # Severity distribution
-                st.subheader("📊 Distribuição de Gravidade")
+                st.subheader(HEADER_SEVERITY_DISTRIBUTION)
                 display_severity_distribution(predictions)
 
                 st.divider()
@@ -119,10 +123,7 @@ def main():
                 if map_fig:
                     st.plotly_chart(map_fig, use_container_width=True)
                 else:
-                    st.warning(
-                        "Não foi possível criar o mapa. "
-                        "Verifique se os dados contêm as colunas necessárias."
-                    )
+                    st.warning(ERROR_MAP_CREATION)
 
             elif error:
                 st.error(ERROR_MODEL_LOAD.format(error))
@@ -132,7 +133,7 @@ def main():
         st.info(INFO_UPLOAD_FILE)
 
         # Show example data structure
-        with st.expander("📋 Formato esperado do arquivo CSV"):
+        with st.expander(HEADER_CSV_FORMAT):
             st.markdown("""
             O arquivo CSV deve conter as seguintes colunas:
             - **Magnitud**: Magnitude do terremoto (escala Richter)

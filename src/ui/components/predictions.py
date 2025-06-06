@@ -8,11 +8,23 @@ from typing import Optional
 
 from ..utils.constants import (
     DOWNLOAD_LABEL,
+    DOWNLOAD_FILENAME,
     HEADER_PREDICTIONS,
+    HEADER_PREDICTION_DETAILS,
     MODEL_PATH,
     SEVERITY_COLORS,
     SEVERITY_LEVELS,
     SUCCESS_MODEL_LOADED,
+    METRIC_LOW_SEVERITY,
+    METRIC_MEDIUM_SEVERITY,
+    METRIC_HIGH_SEVERITY,
+    METRIC_VERY_HIGH_SEVERITY,
+    HELP_LOW_SEVERITY,
+    HELP_MEDIUM_SEVERITY,
+    HELP_HIGH_SEVERITY,
+    HELP_VERY_HIGH_SEVERITY,
+    LOADING_MODEL,
+    LOADING_PREDICTIONS,
 )
 
 
@@ -86,34 +98,34 @@ def display_prediction_results(predictions: pd.DataFrame):
 
     with col1:
         st.metric(
-            "Baixa Gravidade",
+            METRIC_LOW_SEVERITY,
             severity_counts.get("Baja", 0),
-            help="Terremotos de baixo impacto"
+            help=HELP_LOW_SEVERITY
         )
 
     with col2:
         st.metric(
-            "Média Gravidade",
+            METRIC_MEDIUM_SEVERITY,
             severity_counts.get("Media", 0),
-            help="Terremotos de impacto moderado"
+            help=HELP_MEDIUM_SEVERITY
         )
 
     with col3:
         st.metric(
-            "Alta Gravidade",
+            METRIC_HIGH_SEVERITY,
             severity_counts.get("Alta", 0),
-            help="Terremotos de alto impacto"
+            help=HELP_HIGH_SEVERITY
         )
 
     with col4:
         st.metric(
-            "Muito Alta Gravidade",
+            METRIC_VERY_HIGH_SEVERITY,
             severity_counts.get("Muy Alta", 0),
-            help="Terremotos de impacto severo"
+            help=HELP_VERY_HIGH_SEVERITY
         )
 
     # Display styled dataframe
-    st.write("### Detalhes das Predições")
+    st.write(HEADER_PREDICTION_DETAILS)
     styled_df = style_predictions_dataframe(predictions)
     st.dataframe(styled_df, use_container_width=True)
 
@@ -122,7 +134,7 @@ def display_prediction_results(predictions: pd.DataFrame):
     st.download_button(
         label=DOWNLOAD_LABEL,
         data=csv_data,
-        file_name="predicoes_terremotos.csv",
+        file_name=DOWNLOAD_FILENAME,
         mime="text/csv"
     )
 
@@ -138,7 +150,7 @@ def run_prediction_pipeline(df: pd.DataFrame) -> tuple[bool, Optional[pd.DataFra
         Tuple of (success, predictions_df, error_message)
     """
     # Load model with progress indicator
-    with st.spinner("Carregando modelo de predição..."):
+    with st.spinner(LOADING_MODEL):
         model, error = load_ml_model()
 
     if error:
@@ -147,7 +159,7 @@ def run_prediction_pipeline(df: pd.DataFrame) -> tuple[bool, Optional[pd.DataFra
     st.success(SUCCESS_MODEL_LOADED)
 
     # Run predictions with progress indicator
-    with st.spinner("Realizando predições..."):
+    with st.spinner(LOADING_PREDICTIONS):
         try:
             predictions = run_predictions(model, df)
             return True, predictions, None

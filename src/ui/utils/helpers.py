@@ -10,6 +10,8 @@ from ..utils.constants import (
     MENU_ABOUT,
     SUBTITLE,
     TITLE,
+    SOURCE_UPLOAD_TEXT,
+    SOURCE_RANDOM_TEXT,
 )
 
 
@@ -54,8 +56,8 @@ def display_data_source_info():
     """Display information about the current data source."""
     if st.session_state.data_source:
         source_text = {
-            'upload': "📂 Dados carregados do arquivo",
-            'random': "🔄 Dados randômicos gerados"
+            'upload': SOURCE_UPLOAD_TEXT,
+            'random': SOURCE_RANDOM_TEXT
         }
         st.caption(source_text.get(st.session_state.data_source, ""))
 

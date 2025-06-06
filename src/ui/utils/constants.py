@@ -1,7 +1,7 @@
 """Constants and configuration for the Quake-Grade application."""
 
 # Project Information
-GITHUB_REPO_URL = "https://github.com/santiago-albornoz/quake-grade"
+GITHUB_REPO_URL = "https://github.com/santiagonbernardes/quake-grade"
 APP_NAME = "Quake-Grade - Monitor Sísmico"
 APP_ICON = "🌍"
 
@@ -24,6 +24,10 @@ HEADER_HISTOGRAMS = "Histogramas"
 HEADER_BOXPLOTS = "Boxplots"
 HEADER_PREDICTIONS = "Predições"
 HEADER_MAP = "🗺️ Predições no Mapa"
+HEADER_CORRELATION = "📊 Análise de Correlação"
+HEADER_SEVERITY_DISTRIBUTION = "📊 Distribuição de Gravidade"
+HEADER_CSV_FORMAT = "📋 Formato esperado do arquivo CSV"
+HEADER_PREDICTION_DETAILS = "### Detalhes das Predições"
 
 # Buttons and inputs
 BUTTON_RANDOM_DATASET = "🔄 Usar Dataset Randômico"
@@ -42,16 +46,54 @@ ERROR_MISSING_COLUMNS = (
     "Por favor, envie um arquivo no formato correto."
 )
 INFO_UPLOAD_FILE = "Por favor, envie um arquivo CSV para começar."
+ERROR_MAP_CREATION = (
+    "Não foi possível criar o mapa. "
+    "Verifique se os dados contêm as colunas necessárias."
+)
+
+# Tab labels for statistics
+TAB_SUMMARY = "📊 Resumo"
+TAB_DETAILED = "📈 Detalhado"
+
+# Metric labels
+METRIC_TOTAL_RECORDS = "Total de Registros"
+METRIC_TOTAL_COLUMNS = "Total de Colunas"
+METRIC_MEMORY_USAGE = "Memória Utilizada"
+
+# Severity metric labels
+METRIC_LOW_SEVERITY = "Baixa Gravidade"
+METRIC_MEDIUM_SEVERITY = "Média Gravidade"
+METRIC_HIGH_SEVERITY = "Alta Gravidade"
+METRIC_VERY_HIGH_SEVERITY = "Muito Alta Gravidade"
+
+# Help text for metrics
+HELP_LOW_SEVERITY = "Terremotos de baixo impacto"
+HELP_MEDIUM_SEVERITY = "Terremotos de impacto moderado"
+HELP_HIGH_SEVERITY = "Terremotos de alto impacto"
+HELP_VERY_HIGH_SEVERITY = "Terremotos de impacto severo"
+HELP_STATISTICS = "Média ± Desvio Padrão"
+
+# Loading messages
+LOADING_MODEL = "Carregando modelo de predição..."
+LOADING_PREDICTIONS = "Realizando predições..."
+
+# Download configuration
+DOWNLOAD_FILENAME = "predicoes_terremotos.csv"
+
+# Warning and info messages
+WARNING_NO_NUMERIC_COLUMNS = "Nenhuma coluna numérica encontrada no dataset."
+INFO_CORRELATION_REQUIREMENT = "Necessário pelo menos 2 colunas numéricas para análise de correlação."
+
+# Chart titles
+MAP_TITLE = "Distribuição Geográfica dos Terremotos"
+CORRELATION_MATRIX_TITLE = "Matriz de Correlação"
+
+# Data source text
+SOURCE_UPLOAD_TEXT = "📂 Dados carregados do arquivo"
+SOURCE_RANDOM_TEXT = "🔄 Dados randômicos gerados"
 
 # Column names (internal use in English, display in Portuguese)
 EXPECTED_COLUMNS = ["Magnitud", "Latitud", "Longitud", "Profundidad"]
-COLUMN_MAPPING = {
-    "Magnitud": "magnitude",
-    "Latitud": "latitude",
-    "Longitud": "longitude",
-    "Profundidad": "depth",
-    "Gravedad": "severity"
-}
 
 # Severity levels and colors
 SEVERITY_LEVELS = {
@@ -74,7 +116,6 @@ BASE_DATASET_PATH = "src/modelling/dataset/df_test.csv"
 
 # Cache configuration
 CACHE_TTL_DATA = 3600  # 1 hour
-CACHE_MAX_ENTRIES = 100
 
 # Map configuration
 MAP_ZOOM_LEVEL = 4
