@@ -12,7 +12,9 @@ sns.set(style="whitegrid")
 st.set_page_config(layout="wide")
 st.title("Monitor Sísmico: Explorando Terremotos no México e Região")
 st.info(
-    "Mergulhe nos dados dos terremotos que cercam o México. Esta ferramenta analítica permite entender a intensidade dos tremores e prever sua gravidade com base em características fundamentais."
+    "Mergulhe nos dados dos terremotos que cercam o México. Esta ferramenta "
+    "analítica permite entender a intensidade dos tremores e prever sua "
+    "gravidade com base em características fundamentais."
 )
 st.write("")
 
@@ -118,7 +120,8 @@ if usar_dataset_randomico:
 if not st.session_state.get("upload_valido", True):
     faltando = st.session_state.get("colunas_faltando", [])
     st.info(
-        f"O dataset enviado não possui as seguintes colunas obrigatórias: {faltando}. Por favor, envie um arquivo no formato correto."
+        f"O dataset enviado não possui as seguintes colunas obrigatórias: "
+        f"{faltando}. Por favor, envie um arquivo no formato correto."
     )
 
 # Mostrar preview se df existir e upload válido

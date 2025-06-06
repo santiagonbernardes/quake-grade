@@ -23,7 +23,7 @@ override-dependencies = [
 ]
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = [
@@ -36,6 +36,9 @@ select = [
     "UP", # pyupgrade
 ]
 ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"**/train.*" = ["E501"]  # ignore line length for train files
 
 [tool.ruff.format]
 quote-style = "double"
