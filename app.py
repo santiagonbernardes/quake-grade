@@ -79,7 +79,9 @@ def main():
             st.dataframe(df.head(10), use_container_width=True)
 
         # Create tabs for analysis types
-        tab_descriptive, tab_predictive = st.tabs([TAB_DESCRIPTIVE, TAB_PREDICTIVE])
+        tab_descriptive, tab_predictive, tab_ai_analysis = st.tabs([
+            TAB_DESCRIPTIVE, TAB_PREDICTIVE, "🤖 Análise Inteligente"
+        ])
 
         # Descriptive Analysis Tab
         with tab_descriptive:
@@ -102,9 +104,6 @@ def main():
             success, predictions, error = run_prediction_pipeline(df)
 
             if success and predictions is not None:
-                # LLM-powered insights
-                display_prediction_insights(predictions)
-
                 # Display results
                 display_prediction_results(predictions)
 
@@ -118,10 +117,23 @@ def main():
                 # Map visualization
                 display_severity_map(predictions)
 
-                st.divider()
-
             elif error:
                 st.error(ERROR_MODEL_LOAD.format(error))
+
+        # AI Analysis Tab
+        with tab_ai_analysis:
+            # Run prediction pipeline for AI analysis
+            success, predictions, error = run_prediction_pipeline(df)
+
+            if success and predictions is not None:
+                # LLM-powered insights
+                display_prediction_insights(predictions)
+            elif error:
+                st.error(ERROR_MODEL_LOAD.format(error))
+            else:
+                st.info(
+                    "Execute as predições primeiro para gerar análises inteligentes."
+                )
 
     else:
         # No data loaded
