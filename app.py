@@ -24,7 +24,6 @@ from src.ui.components.visualizations import (
     display_statistics,
 )
 from src.ui.utils.constants import (
-    AI_PREDICTIONS_REQUIRED,
     BUTTON_RANDOM_DATASET,
     ERROR_MODEL_LOAD,
     HEADER_CSV_FORMAT,
@@ -81,9 +80,9 @@ def main():
             st.dataframe(df.head(10), use_container_width=True)
 
         # Create tabs for analysis types
-        tab_descriptive, tab_predictive, tab_ai_analysis = st.tabs([
-            TAB_DESCRIPTIVE, TAB_PREDICTIVE, TAB_AI_ANALYSIS
-        ])
+        tab_descriptive, tab_predictive, tab_ai_analysis = st.tabs(
+            [TAB_DESCRIPTIVE, TAB_PREDICTIVE, TAB_AI_ANALYSIS]
+        )
 
         # Descriptive Analysis Tab
         with tab_descriptive:
@@ -124,16 +123,8 @@ def main():
 
         # AI Analysis Tab
         with tab_ai_analysis:
-            # Run prediction pipeline for AI analysis
-            success, predictions, error = run_prediction_pipeline(df)
-
-            if success and predictions is not None:
-                # LLM-powered insights
-                display_prediction_insights(predictions)
-            elif error:
-                st.error(ERROR_MODEL_LOAD.format(error))
-            else:
-                st.info(AI_PREDICTIONS_REQUIRED)
+            # LLM-powered insights on user's dataset
+            display_prediction_insights()
 
     else:
         # No data loaded

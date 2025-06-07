@@ -35,6 +35,7 @@ BUTTON_RANDOM_DATASET = "🔄 Usar Dataset Randômico"
 UPLOAD_LABEL = "📂 Envie seu arquivo CSV"
 DOWNLOAD_LABEL = "📥 Baixar Resultado como CSV"
 SELECT_NUMERIC_COLUMN = "Selecione coluna numérica"
+UPLOAD_FIRST_LABEL = "📂 Carregue o arquivo CSV primeiro"
 
 # Messages
 SUCCESS_FILE_LOADED = "Arquivo carregado com sucesso!"
@@ -159,8 +160,7 @@ AI_QUALITY_ERROR = "📊 Qualidade dos Dados - Erro"
 
 # AI Analysis Messages
 AI_UNAVAILABLE_WARNING = (
-    "⚠️ OpenAI API key não encontrada. "
-    "Funcionalidades de IA não estarão disponíveis."
+    "⚠️ OpenAI API key não encontrada. Funcionalidades de IA não estarão disponíveis."
 )
 AI_SERVICE_ERROR = "❌ Serviço de IA não disponível: {}"
 AI_PREDICTIONS_REQUIRED = (

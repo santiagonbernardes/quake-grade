@@ -1,4 +1,4 @@
-"""LLM-powered insights component for earthquake predictions."""
+"""LLM-powered insights component for earthquake data analysis."""
 
 import hashlib
 from typing import Optional
@@ -29,61 +29,64 @@ from src.ui.utils.constants import (
     AI_RISK_UNKNOWN_ERROR,
     AI_SERVICE_ERROR,
     AI_UNAVAILABLE_WARNING,
+    UPLOAD_FIRST_LABEL,
 )
 
 
 @st.cache_data(ttl=1800, max_entries=50)
 def _cached_llm_insights(data_hash: str, api_key: str) -> Optional[str]:
-    """Generate insights with caching (30-minute TTL)."""
-    # Recreate the dataframe from session state for the API call
-    predictions = st.session_state.get("df")
-    if predictions is None:
+    """Generate insights from user's dataset with caching (30-minute TTL)."""
+    # Get the user's uploaded dataset from session state
+    df = st.session_state.get("df")
+    if df is None:
         return None
 
     llm_service = create_llm_service(api_key)
     if not llm_service.is_available():
         return None
 
-    return llm_service.generate_prediction_insights(predictions)
+    return llm_service.generate_prediction_insights(df)
 
 
 @st.cache_data(ttl=1800, max_entries=50)
 def _cached_risk_assessment(data_hash: str, api_key: str) -> Optional[str]:
-    """Generate risk assessment with caching (30-minute TTL)."""
-    predictions = st.session_state.get("df")
-    if predictions is None:
+    """Generate risk assessment from user's dataset with caching (30-minute TTL)."""
+    # Get the user's uploaded dataset from session state
+    df = st.session_state.get("df")
+    if df is None:
         return None
 
     llm_service = create_llm_service(api_key)
     if not llm_service.is_available():
         return None
 
-    return llm_service.generate_risk_assessment(predictions)
+    return llm_service.generate_risk_assessment(df)
 
 
 @st.cache_data(ttl=1800, max_entries=50)
 def _cached_quality_analysis(data_hash: str, api_key: str) -> Optional[str]:
-    """Generate quality analysis with caching (30-minute TTL)."""
-    predictions = st.session_state.get("df")
-    if predictions is None:
+    """Generate data quality analysis from user's dataset with caching (30-min TTL)."""
+    # Get the user's uploaded dataset from session state
+    df = st.session_state.get("df")
+    if df is None:
         return None
 
     llm_service = create_llm_service(api_key)
     if not llm_service.is_available():
         return None
 
-    return llm_service.analyze_data_quality(predictions)
+    return llm_service.analyze_data_quality(df)
 
 
 def _generate_data_hash(df: pd.DataFrame) -> str:
-    """Generate a hash of the dataframe for caching purposes."""
-    # Create a hash based on the dataframe content
+    """Generate a hash of the user's dataset for caching purposes."""
+    # Create a hash based on the dataframe content to enable caching
     df_string = df.to_string()
     return hashlib.md5(df_string.encode()).hexdigest()
 
 
 def _initialize_llm_session_state():
-    """Initialize session state variables for LLM results."""
+    """Initialize session state variables for storing LLM analysis results."""
     if "llm_insights" not in st.session_state:
         st.session_state.llm_insights = None
     if "llm_risk_assessment" not in st.session_state:
@@ -94,10 +97,26 @@ def _initialize_llm_session_state():
         st.session_state.llm_errors = {}
 
 
-def display_prediction_insights(predictions: pd.DataFrame):
-    """Display LLM-generated insights for prediction results."""
-    # Initialize session state
+def display_prediction_insights():
+    """
+    Display LLM-generated insights for the user's uploaded dataset.
+
+    Analyzes the raw earthquake data to provide:
+    - Intelligent insights about earthquake patterns
+    - Risk assessment based on data characteristics
+    - Data quality analysis and recommendations
+
+    Requires user to upload a dataset first.
+    """
+    # Initialize session state for LLM results
     _initialize_llm_session_state()
+
+    # Get the user's uploaded dataset
+    df = st.session_state.get("df")
+
+    if df is None:
+        st.warning(UPLOAD_FIRST_LABEL)
+        return
 
     # Get API key from Streamlit secrets
     api_key = st.secrets.get("OPENAI_API_KEY")
@@ -116,8 +135,8 @@ def display_prediction_insights(predictions: pd.DataFrame):
     st.subheader(AI_ANALYSIS_TITLE)
     st.write(AI_ANALYSIS_DESCRIPTION)
 
-    # Generate data hash for caching
-    data_hash = _generate_data_hash(predictions)
+    # Generate data hash for caching LLM responses
+    data_hash = _generate_data_hash(df)
 
     # Create columns for buttons and results
     col1, col2, col3 = st.columns(3)

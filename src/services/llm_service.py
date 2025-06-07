@@ -62,9 +62,7 @@ class LLMService:
             error_message="Erro ao gerar insights",
         )
 
-    def generate_risk_assessment(
-        self, predictions_df: pd.DataFrame
-    ) -> Optional[str]:
+    def generate_risk_assessment(self, predictions_df: pd.DataFrame) -> Optional[str]:
         """Generate risk assessment narrative from predictions."""
         if not self.is_available():
             return None
@@ -110,10 +108,10 @@ class LLMService:
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt}
+                    {"role": "user", "content": user_prompt},
                 ],
                 max_tokens=max_tokens,
-                temperature=temperature
+                temperature=temperature,
             )
             return response.choices[0].message.content
         except Exception as e:
@@ -129,7 +127,7 @@ class LLMService:
                 "depth_stats": {},
                 "latitude_range": {},
                 "longitude_range": {},
-                "severity_distribution": {}
+                "severity_distribution": {},
             }
 
             if "Magnitud" in df.columns:
@@ -160,15 +158,12 @@ class LLMService:
             "min": float(series.min()),
             "max": float(series.max()),
             "mean": float(series.mean()),
-            "std": float(series.std())
+            "std": float(series.std()),
         }
 
     def _get_range_stats(self, series: pd.Series) -> dict:
         """Get range statistics for a pandas series."""
-        return {
-            "min": float(series.min()),
-            "max": float(series.max())
-        }
+        return {"min": float(series.min()), "max": float(series.max())}
 
     def _prepare_risk_summary(self, df: pd.DataFrame) -> dict:
         """Prepare risk summary for assessment using only available columns."""
@@ -178,7 +173,7 @@ class LLMService:
                 "high_risk_count": 0,
                 "medium_risk_count": 0,
                 "low_risk_count": 0,
-                "avg_magnitude_high_risk": 0.0
+                "avg_magnitude_high_risk": 0.0,
             }
 
             if "Gravedad" in df.columns:
@@ -212,12 +207,11 @@ class LLMService:
                     k: int(v) for k, v in df.isnull().sum().to_dict().items()
                 },
                 "duplicate_rows": int(df.duplicated().sum()),
-                "data_types": df.dtypes.astype(str).to_dict()
+                "data_types": df.dtypes.astype(str).to_dict(),
             }
             return summary
         except Exception:
             return {"total_rows": int(len(df)), "error": "Erro ao analisar qualidade"}
-
 
 
 # Factory function to create LLM service instance
