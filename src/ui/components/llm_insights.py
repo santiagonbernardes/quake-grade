@@ -7,6 +7,29 @@ import pandas as pd
 import streamlit as st
 
 from src.services.llm_service import create_llm_service
+from src.ui.utils.constants import (
+    AI_ANALYSIS_DESCRIPTION,
+    AI_ANALYSIS_TITLE,
+    AI_CLEAR_BUTTON,
+    AI_GENERIC_ERROR,
+    AI_INSIGHTS_BUTTON,
+    AI_INSIGHTS_ERROR,
+    AI_INSIGHTS_SPINNER,
+    AI_INSIGHTS_TITLE,
+    AI_INSIGHTS_UNKNOWN_ERROR,
+    AI_QUALITY_BUTTON,
+    AI_QUALITY_ERROR,
+    AI_QUALITY_SPINNER,
+    AI_QUALITY_TITLE,
+    AI_QUALITY_UNKNOWN_ERROR,
+    AI_RISK_BUTTON,
+    AI_RISK_ERROR,
+    AI_RISK_SPINNER,
+    AI_RISK_TITLE,
+    AI_RISK_UNKNOWN_ERROR,
+    AI_SERVICE_ERROR,
+    AI_UNAVAILABLE_WARNING,
+)
 
 
 @st.cache_data(ttl=1800, max_entries=50)
@@ -80,23 +103,18 @@ def display_prediction_insights(predictions: pd.DataFrame):
     api_key = st.secrets.get("OPENAI_API_KEY")
 
     if not api_key:
-        st.warning(
-            "⚠️ OpenAI API key não encontrada. "
-            "Funcionalidades de IA não estarão disponíveis."
-        )
+        st.warning(AI_UNAVAILABLE_WARNING)
         return
 
     # Test service availability
     llm_service = create_llm_service(api_key)
     if not llm_service.is_available():
         error_msg = llm_service.get_error_message()
-        st.error(f"❌ Serviço de IA não disponível: {error_msg}")
+        st.error(AI_SERVICE_ERROR.format(error_msg))
         return
 
-    st.subheader("🤖 Análise Inteligente")
-    st.write(
-        "Clique nos botões abaixo para gerar análises específicas usando IA."
-    )
+    st.subheader(AI_ANALYSIS_TITLE)
+    st.write(AI_ANALYSIS_DESCRIPTION)
 
     # Generate data hash for caching
     data_hash = _generate_data_hash(predictions)
@@ -105,8 +123,8 @@ def display_prediction_insights(predictions: pd.DataFrame):
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        if st.button("💡 Gerar Insights", use_container_width=True):
-            with st.spinner("Gerando insights..."):
+        if st.button(AI_INSIGHTS_BUTTON, use_container_width=True):
+            with st.spinner(AI_INSIGHTS_SPINNER):
                 try:
                     insights = _cached_llm_insights(data_hash, api_key)
                     if insights:
@@ -115,22 +133,24 @@ def display_prediction_insights(predictions: pd.DataFrame):
                     else:
                         error_msg = llm_service.get_error_message()
                         st.session_state.llm_errors["insights"] = (
-                            error_msg or "Erro desconhecido ao gerar insights"
+                            error_msg or AI_INSIGHTS_UNKNOWN_ERROR
                         )
                 except Exception as e:
-                    st.session_state.llm_errors["insights"] = f"Erro: {str(e)}"
+                    st.session_state.llm_errors["insights"] = AI_GENERIC_ERROR.format(
+                        str(e)
+                    )
 
         # Display insights result in expander
         if st.session_state.llm_insights:
-            with st.expander("💡 Insights Automáticos", expanded=True):
+            with st.expander(AI_INSIGHTS_TITLE, expanded=True):
                 st.markdown(st.session_state.llm_insights)
         elif "insights" in st.session_state.llm_errors:
-            with st.expander("💡 Insights - Erro", expanded=True):
+            with st.expander(AI_INSIGHTS_ERROR, expanded=True):
                 st.error(st.session_state.llm_errors["insights"])
 
     with col2:
-        if st.button("⚠️ Avaliar Riscos", use_container_width=True):
-            with st.spinner("Analisando riscos..."):
+        if st.button(AI_RISK_BUTTON, use_container_width=True):
+            with st.spinner(AI_RISK_SPINNER):
                 try:
                     risk_assessment = _cached_risk_assessment(data_hash, api_key)
                     if risk_assessment:
@@ -139,22 +159,24 @@ def display_prediction_insights(predictions: pd.DataFrame):
                     else:
                         error_msg = llm_service.get_error_message()
                         st.session_state.llm_errors["risk"] = (
-                            error_msg or "Erro desconhecido ao avaliar riscos"
+                            error_msg or AI_RISK_UNKNOWN_ERROR
                         )
                 except Exception as e:
-                    st.session_state.llm_errors["risk"] = f"Erro: {str(e)}"
+                    st.session_state.llm_errors["risk"] = AI_GENERIC_ERROR.format(
+                        str(e)
+                    )
 
         # Display risk assessment result in expander
         if st.session_state.llm_risk_assessment:
-            with st.expander("⚠️ Avaliação de Riscos", expanded=True):
+            with st.expander(AI_RISK_TITLE, expanded=True):
                 st.markdown(st.session_state.llm_risk_assessment)
         elif "risk" in st.session_state.llm_errors:
-            with st.expander("⚠️ Avaliação de Riscos - Erro", expanded=True):
+            with st.expander(AI_RISK_ERROR, expanded=True):
                 st.error(st.session_state.llm_errors["risk"])
 
     with col3:
-        if st.button("📊 Analisar Qualidade", use_container_width=True):
-            with st.spinner("Analisando qualidade dos dados..."):
+        if st.button(AI_QUALITY_BUTTON, use_container_width=True):
+            with st.spinner(AI_QUALITY_SPINNER):
                 try:
                     quality_analysis = _cached_quality_analysis(data_hash, api_key)
                     if quality_analysis:
@@ -163,17 +185,19 @@ def display_prediction_insights(predictions: pd.DataFrame):
                     else:
                         error_msg = llm_service.get_error_message()
                         st.session_state.llm_errors["quality"] = (
-                            error_msg or "Erro desconhecido ao analisar qualidade"
+                            error_msg or AI_QUALITY_UNKNOWN_ERROR
                         )
                 except Exception as e:
-                    st.session_state.llm_errors["quality"] = f"Erro: {str(e)}"
+                    st.session_state.llm_errors["quality"] = AI_GENERIC_ERROR.format(
+                        str(e)
+                    )
 
         # Display quality analysis result in expander
         if st.session_state.llm_quality_analysis:
-            with st.expander("📊 Qualidade dos Dados", expanded=True):
+            with st.expander(AI_QUALITY_TITLE, expanded=True):
                 st.markdown(st.session_state.llm_quality_analysis)
         elif "quality" in st.session_state.llm_errors:
-            with st.expander("📊 Qualidade dos Dados - Erro", expanded=True):
+            with st.expander(AI_QUALITY_ERROR, expanded=True):
                 st.error(st.session_state.llm_errors["quality"])
 
     # Clear results button (only show if there are results)
@@ -183,7 +207,7 @@ def display_prediction_insights(predictions: pd.DataFrame):
         or st.session_state.llm_quality_analysis
     ):
         st.divider()
-        if st.button("🗑️ Limpar Todas as Análises"):
+        if st.button(AI_CLEAR_BUTTON):
             st.session_state.llm_insights = None
             st.session_state.llm_risk_assessment = None
             st.session_state.llm_quality_analysis = None

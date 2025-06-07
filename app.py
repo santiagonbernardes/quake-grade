@@ -24,12 +24,14 @@ from src.ui.components.visualizations import (
     display_statistics,
 )
 from src.ui.utils.constants import (
+    AI_PREDICTIONS_REQUIRED,
     BUTTON_RANDOM_DATASET,
     ERROR_MODEL_LOAD,
     HEADER_CSV_FORMAT,
     HEADER_PREVIEW,
     INFO_UPLOAD_FILE,
     SUCCESS_RANDOM_DATASET,
+    TAB_AI_ANALYSIS,
     TAB_DESCRIPTIVE,
     TAB_PREDICTIVE,
 )
@@ -80,7 +82,7 @@ def main():
 
         # Create tabs for analysis types
         tab_descriptive, tab_predictive, tab_ai_analysis = st.tabs([
-            TAB_DESCRIPTIVE, TAB_PREDICTIVE, "🤖 Análise Inteligente"
+            TAB_DESCRIPTIVE, TAB_PREDICTIVE, TAB_AI_ANALYSIS
         ])
 
         # Descriptive Analysis Tab
@@ -131,9 +133,7 @@ def main():
             elif error:
                 st.error(ERROR_MODEL_LOAD.format(error))
             else:
-                st.info(
-                    "Execute as predições primeiro para gerar análises inteligentes."
-                )
+                st.info(AI_PREDICTIONS_REQUIRED)
 
     else:
         # No data loaded
