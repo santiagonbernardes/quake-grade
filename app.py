@@ -11,6 +11,7 @@ from src.ui.components.data_loader import (
     handle_file_upload,
     load_base_dataset,
 )
+from src.ui.components.llm_insights import display_prediction_insights
 from src.ui.components.predictions import (
     display_prediction_results,
     display_severity_distribution,
@@ -29,6 +30,7 @@ from src.ui.utils.constants import (
     HEADER_PREVIEW,
     INFO_UPLOAD_FILE,
     SUCCESS_RANDOM_DATASET,
+    TAB_AI_ANALYSIS,
     TAB_DESCRIPTIVE,
     TAB_PREDICTIVE,
 )
@@ -73,12 +75,14 @@ def main():
         df = st.session_state.df
 
         # Data preview section
-        with st.expander(HEADER_PREVIEW, expanded=True):
+        with st.expander(HEADER_PREVIEW, expanded=False):
             display_data_info(df)
             st.dataframe(df.head(10), use_container_width=True)
 
         # Create tabs for analysis types
-        tab_descriptive, tab_predictive = st.tabs([TAB_DESCRIPTIVE, TAB_PREDICTIVE])
+        tab_descriptive, tab_predictive, tab_ai_analysis = st.tabs(
+            [TAB_DESCRIPTIVE, TAB_PREDICTIVE, TAB_AI_ANALYSIS]
+        )
 
         # Descriptive Analysis Tab
         with tab_descriptive:
@@ -116,6 +120,11 @@ def main():
 
             elif error:
                 st.error(ERROR_MODEL_LOAD.format(error))
+
+        # AI Analysis Tab
+        with tab_ai_analysis:
+            # LLM-powered insights on user's dataset
+            display_prediction_insights()
 
     else:
         # No data loaded

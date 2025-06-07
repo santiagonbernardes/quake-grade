@@ -15,7 +15,8 @@ SUBTITLE = (
 
 # Tab names
 TAB_DESCRIPTIVE = "📊 Análise Descritiva"
-TAB_PREDICTIVE = "🤖 Análise Preditiva"
+TAB_PREDICTIVE = "📈 Análise Preditiva"
+TAB_AI_ANALYSIS = "🤖 Análise com LLM"
 
 # Section headers
 HEADER_PREVIEW = "Prévia dos Dados"
@@ -34,6 +35,7 @@ BUTTON_RANDOM_DATASET = "🔄 Usar Dataset Randômico"
 UPLOAD_LABEL = "📂 Envie seu arquivo CSV"
 DOWNLOAD_LABEL = "📥 Baixar Resultado como CSV"
 SELECT_NUMERIC_COLUMN = "Selecione coluna numérica"
+UPLOAD_FIRST_LABEL = "📂 Carregue o arquivo CSV primeiro"
 
 # Messages
 SUCCESS_FILE_LOADED = "Arquivo carregado com sucesso!"
@@ -132,3 +134,41 @@ de dados e Machine Learning para prever níveis de impacto de terremotos.
 
 Desenvolvido para o programa Global Solutions da FIAP.
 """
+
+# AI Analysis UI Text
+AI_ANALYSIS_TITLE = "🤖 Análise com LLM"
+AI_ANALYSIS_DESCRIPTION = (
+    "Clique nos botões abaixo para gerar análises específicas usando um LLM."
+)
+AI_INSIGHTS_BUTTON = "💡 Gerar Insights"
+AI_RISK_BUTTON = "⚠️ Avaliar Riscos"
+AI_QUALITY_BUTTON = "📊 Analisar Qualidade"
+AI_CLEAR_BUTTON = "🗑️ Limpar Todas as Análises"
+
+# AI Analysis Spinner Messages
+AI_INSIGHTS_SPINNER = "Gerando insights..."
+AI_RISK_SPINNER = "Analisando riscos..."
+AI_QUALITY_SPINNER = "Analisando qualidade dos dados..."
+
+# AI Analysis Expander Titles
+AI_INSIGHTS_TITLE = "💡 Insights Automáticos"
+AI_RISK_TITLE = "⚠️ Avaliação de Riscos"
+AI_QUALITY_TITLE = "📊 Qualidade dos Dados"
+AI_INSIGHTS_ERROR = "💡 Insights - Erro"
+AI_RISK_ERROR = "⚠️ Avaliação de Riscos - Erro"
+AI_QUALITY_ERROR = "📊 Qualidade dos Dados - Erro"
+
+# AI Analysis Messages
+AI_UNAVAILABLE_WARNING = (
+    "⚠️ OpenAI API key não encontrada. Funcionalidades de IA não estarão disponíveis."
+)
+AI_SERVICE_ERROR = "❌ Serviço de IA não disponível: {}"
+AI_PREDICTIONS_REQUIRED = (
+    "Execute as predições primeiro para gerar análises inteligentes."
+)
+
+# AI Analysis Error Messages
+AI_INSIGHTS_UNKNOWN_ERROR = "Erro desconhecido ao gerar insights"
+AI_RISK_UNKNOWN_ERROR = "Erro desconhecido ao avaliar riscos"
+AI_QUALITY_UNKNOWN_ERROR = "Erro desconhecido ao analisar qualidade"
+AI_GENERIC_ERROR = "Erro: {}"
