@@ -102,6 +102,9 @@ def main():
             success, predictions, error = run_prediction_pipeline(df)
 
             if success and predictions is not None:
+                # LLM-powered insights
+                display_prediction_insights(predictions)
+
                 # Display results
                 display_prediction_results(predictions)
 
@@ -116,9 +119,6 @@ def main():
                 display_severity_map(predictions)
 
                 st.divider()
-
-                # LLM-powered insights
-                display_prediction_insights(predictions)
 
             elif error:
                 st.error(ERROR_MODEL_LOAD.format(error))

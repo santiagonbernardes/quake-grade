@@ -1,6 +1,7 @@
 """
 LLM Service for earthquake data analysis and insights generation.
-Integrates with OpenAI API for generating insights, risk assessments, and data quality analysis.
+Integrates with OpenAI API for generating insights, risk assessments, and data quality
+analysis.
 """
 
 from typing import Optional
@@ -123,7 +124,7 @@ class LLMService:
         """Prepare data summary for LLM analysis using only available columns."""
         try:
             summary = {
-                "total_events": len(df),
+                "total_events": int(len(df)),
                 "magnitude_stats": {},
                 "depth_stats": {},
                 "latitude_range": {},
@@ -144,13 +145,14 @@ class LLMService:
                 summary["longitude_range"] = self._get_range_stats(df["Longitud"])
 
             if "Gravedad" in df.columns:
-                summary["severity_distribution"] = (
-                    df["Gravedad"].value_counts().to_dict()
-                )
+                severity_counts = df["Gravedad"].value_counts()
+                summary["severity_distribution"] = {
+                    k: int(v) for k, v in severity_counts.to_dict().items()
+                }
 
             return summary
         except Exception:
-            return {"total_events": len(df), "error": "Erro ao processar dados"}
+            return {"total_events": int(len(df)), "error": "Erro ao processar dados"}
 
     def _get_numeric_stats(self, series: pd.Series) -> dict:
         """Get numeric statistics for a pandas series."""
@@ -172,11 +174,11 @@ class LLMService:
         """Prepare risk summary for assessment using only available columns."""
         try:
             summary = {
-                "total_events": len(df),
+                "total_events": int(len(df)),
                 "high_risk_count": 0,
                 "medium_risk_count": 0,
                 "low_risk_count": 0,
-                "avg_magnitude_high_risk": 0
+                "avg_magnitude_high_risk": 0.0
             }
 
             if "Gravedad" in df.columns:
@@ -184,9 +186,9 @@ class LLMService:
                 medium_risk = df[df["Gravedad"] == "Alta"]
                 low_risk = df[df["Gravedad"].isin(["Media", "Baja"])]
 
-                summary["high_risk_count"] = len(high_risk)
-                summary["medium_risk_count"] = len(medium_risk)
-                summary["low_risk_count"] = len(low_risk)
+                summary["high_risk_count"] = int(len(high_risk))
+                summary["medium_risk_count"] = int(len(medium_risk))
+                summary["low_risk_count"] = int(len(low_risk))
 
                 if len(high_risk) > 0 and "Magnitud" in high_risk.columns:
                     summary["avg_magnitude_high_risk"] = float(
@@ -196,7 +198,7 @@ class LLMService:
             return summary
         except Exception:
             return {
-                "total_events": len(df),
+                "total_events": int(len(df)),
                 "error": "Erro ao processar dados de risco",
             }
 
@@ -204,15 +206,17 @@ class LLMService:
         """Prepare data quality summary."""
         try:
             summary = {
-                "total_rows": len(df),
+                "total_rows": int(len(df)),
                 "columns": list(df.columns),
-                "missing_values": df.isnull().sum().to_dict(),
-                "duplicate_rows": df.duplicated().sum(),
+                "missing_values": {
+                    k: int(v) for k, v in df.isnull().sum().to_dict().items()
+                },
+                "duplicate_rows": int(df.duplicated().sum()),
                 "data_types": df.dtypes.astype(str).to_dict()
             }
             return summary
         except Exception:
-            return {"total_rows": len(df), "error": "Erro ao analisar qualidade"}
+            return {"total_rows": int(len(df)), "error": "Erro ao analisar qualidade"}
 
 
 

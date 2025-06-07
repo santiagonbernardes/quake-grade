@@ -95,14 +95,13 @@ def display_prediction_insights(predictions: pd.DataFrame):
 
     st.subheader("🤖 Análise Inteligente")
     st.write(
-        "Clique nos botões abaixo para gerar análises específicas usando IA. "
-        "Os resultados são armazenados e ficam visíveis até você sair da aplicação."
+        "Clique nos botões abaixo para gerar análises específicas usando IA."
     )
 
     # Generate data hash for caching
     data_hash = _generate_data_hash(predictions)
 
-    # Create columns for buttons
+    # Create columns for buttons and results
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -121,6 +120,14 @@ def display_prediction_insights(predictions: pd.DataFrame):
                 except Exception as e:
                     st.session_state.llm_errors["insights"] = f"Erro: {str(e)}"
 
+        # Display insights result in expander
+        if st.session_state.llm_insights:
+            with st.expander("💡 Insights Automáticos", expanded=True):
+                st.markdown(st.session_state.llm_insights)
+        elif "insights" in st.session_state.llm_errors:
+            with st.expander("💡 Insights - Erro", expanded=True):
+                st.error(st.session_state.llm_errors["insights"])
+
     with col2:
         if st.button("⚠️ Avaliar Riscos", use_container_width=True):
             with st.spinner("Analisando riscos..."):
@@ -136,6 +143,14 @@ def display_prediction_insights(predictions: pd.DataFrame):
                         )
                 except Exception as e:
                     st.session_state.llm_errors["risk"] = f"Erro: {str(e)}"
+
+        # Display risk assessment result in expander
+        if st.session_state.llm_risk_assessment:
+            with st.expander("⚠️ Avaliação de Riscos", expanded=True):
+                st.markdown(st.session_state.llm_risk_assessment)
+        elif "risk" in st.session_state.llm_errors:
+            with st.expander("⚠️ Avaliação de Riscos - Erro", expanded=True):
+                st.error(st.session_state.llm_errors["risk"])
 
     with col3:
         if st.button("📊 Analisar Qualidade", use_container_width=True):
@@ -153,39 +168,21 @@ def display_prediction_insights(predictions: pd.DataFrame):
                 except Exception as e:
                     st.session_state.llm_errors["quality"] = f"Erro: {str(e)}"
 
-    # Display persistent results
-    st.divider()
+        # Display quality analysis result in expander
+        if st.session_state.llm_quality_analysis:
+            with st.expander("📊 Qualidade dos Dados", expanded=True):
+                st.markdown(st.session_state.llm_quality_analysis)
+        elif "quality" in st.session_state.llm_errors:
+            with st.expander("📊 Qualidade dos Dados - Erro", expanded=True):
+                st.error(st.session_state.llm_errors["quality"])
 
-    # Display insights
-    if st.session_state.llm_insights:
-        st.markdown("### 💡 Insights Automáticos")
-        st.markdown(st.session_state.llm_insights)
-        st.divider()
-    elif "insights" in st.session_state.llm_errors:
-        st.error(f"❌ Insights: {st.session_state.llm_errors['insights']}")
-
-    # Display risk assessment
-    if st.session_state.llm_risk_assessment:
-        st.markdown("### ⚠️ Avaliação de Riscos")
-        st.markdown(st.session_state.llm_risk_assessment)
-        st.divider()
-    elif "risk" in st.session_state.llm_errors:
-        st.error(f"❌ Avaliação de Riscos: {st.session_state.llm_errors['risk']}")
-
-    # Display quality analysis
-    if st.session_state.llm_quality_analysis:
-        st.markdown("### 📊 Qualidade dos Dados")
-        st.markdown(st.session_state.llm_quality_analysis)
-        st.divider()
-    elif "quality" in st.session_state.llm_errors:
-        st.error(f"❌ Qualidade dos Dados: {st.session_state.llm_errors['quality']}")
-
-    # Clear results button
+    # Clear results button (only show if there are results)
     if (
         st.session_state.llm_insights
         or st.session_state.llm_risk_assessment
         or st.session_state.llm_quality_analysis
     ):
+        st.divider()
         if st.button("🗑️ Limpar Todas as Análises"):
             st.session_state.llm_insights = None
             st.session_state.llm_risk_assessment = None
