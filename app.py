@@ -11,6 +11,7 @@ from src.ui.components.data_loader import (
     handle_file_upload,
     load_base_dataset,
 )
+from src.ui.components.llm_insights import display_prediction_insights
 from src.ui.components.predictions import (
     display_prediction_results,
     display_severity_distribution,
@@ -73,7 +74,7 @@ def main():
         df = st.session_state.df
 
         # Data preview section
-        with st.expander(HEADER_PREVIEW, expanded=True):
+        with st.expander(HEADER_PREVIEW, expanded=False):
             display_data_info(df)
             st.dataframe(df.head(10), use_container_width=True)
 
@@ -113,6 +114,11 @@ def main():
 
                 # Map visualization
                 display_severity_map(predictions)
+
+                st.divider()
+
+                # LLM-powered insights
+                display_prediction_insights(predictions)
 
             elif error:
                 st.error(ERROR_MODEL_LOAD.format(error))

@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.11"
 dependencies = [
+    "openai>=1.84.0",
     "pycaret==3.3.2", # has pandas, scikit-learn, matplotlib, jupyter
     "seaborn>=0.13.2",
     "streamlit>=1.45.1",
