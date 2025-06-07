@@ -207,9 +207,11 @@ def display_prediction_insights(predictions: pd.DataFrame):
         or st.session_state.llm_quality_analysis
     ):
         st.divider()
-        if st.button(AI_CLEAR_BUTTON):
-            st.session_state.llm_insights = None
-            st.session_state.llm_risk_assessment = None
-            st.session_state.llm_quality_analysis = None
-            st.session_state.llm_errors = {}
-            st.rerun()
+        _, button_col, _ = st.columns(3)
+        with button_col:
+            if st.button(AI_CLEAR_BUTTON, use_container_width=True):
+                st.session_state.llm_insights = None
+                st.session_state.llm_risk_assessment = None
+                st.session_state.llm_quality_analysis = None
+                st.session_state.llm_errors = {}
+                st.rerun()
