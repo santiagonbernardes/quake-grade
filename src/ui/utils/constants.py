@@ -16,7 +16,7 @@ SUBTITLE = (
 # Tab names
 TAB_DESCRIPTIVE = "📊 Análise Descritiva"
 TAB_PREDICTIVE = "📈 Análise Preditiva"
-TAB_AI_ANALYSIS = "🤖 Análise Inteligente"
+TAB_AI_ANALYSIS = "🤖 Análise com LLM"
 
 # Section headers
 HEADER_PREVIEW = "Prévia dos Dados"
@@ -136,9 +136,9 @@ Desenvolvido para o programa Global Solutions da FIAP.
 """
 
 # AI Analysis UI Text
-AI_ANALYSIS_TITLE = "🤖 Análise Inteligente"
+AI_ANALYSIS_TITLE = "🤖 Análise com LLM"
 AI_ANALYSIS_DESCRIPTION = (
-    "Clique nos botões abaixo para gerar análises específicas usando IA."
+    "Clique nos botões abaixo para gerar análises específicas usando um LLM."
 )
 AI_INSIGHTS_BUTTON = "💡 Gerar Insights"
 AI_RISK_BUTTON = "⚠️ Avaliar Riscos"
