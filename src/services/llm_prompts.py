@@ -15,15 +15,15 @@ def create_insights_prompt(data_summary: dict) -> str:
     {json.dumps(data_summary, indent=2, ensure_ascii=False)}
 
     Por favor, forneça:
-    1. **Principais descobertas**: Padrões importantes nos dados de magnitude, 
+    1. **Principais descobertas**: Padrões importantes nos dados de magnitude,
        profundidade e localização
-    2. **Distribuição de severidade**: Análise das predições de gravidade dos 
+    2. **Distribuição de severidade**: Análise das predições de gravidade dos
        terremotos
-    3. **Características geográficas**: Insights sobre a distribuição espacial 
+    3. **Características geográficas**: Insights sobre a distribuição espacial
        (latitude/longitude)
     4. **Recomendações**: Ações sugeridas baseadas nos padrões identificados
 
-    Mantenha a resposta concisa e focada em insights práticos para gestores de 
+    Mantenha a resposta concisa e focada em insights práticos para gestores de
     emergência.
     """
 
@@ -37,7 +37,7 @@ def create_risk_prompt(risk_summary: dict) -> str:
     {json.dumps(risk_summary, indent=2, ensure_ascii=False)}
 
     Por favor, forneça:
-    1. **Nível de Risco Geral**: Baixo/Médio/Alto com justificativa baseada na 
+    1. **Nível de Risco Geral**: Baixo/Médio/Alto com justificativa baseada na
        distribuição de severidade
     2. **Eventos Críticos**: Análise dos terremotos de alta severidade (Muy Alta)
     3. **Medidas Preventivas**: Ações específicas recomendadas baseadas nos dados
